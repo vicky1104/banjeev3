@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "banjeev3",
+    "slug": "banjeev3",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "banjeev3"
+}
