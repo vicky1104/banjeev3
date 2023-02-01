@@ -3,7 +3,7 @@
 buildscript {
     ext {
         buildToolsVersion = findProperty('android.buildToolsVersion') ?: '31.0.0'
-        minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '21')
+        minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '26')
         compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '31')
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '31')
         if (findProperty('android.kotlinVersion')) {
@@ -24,7 +24,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:7.2.1')
+        classpath('com.android.tools.build:gradle:7.0.4')
         classpath('com.facebook.react:react-native-gradle-plugin')
         classpath('de.undercouch:gradle-download-task:5.0.1')
         // NOTE: Do not place your application dependencies here; they belong
@@ -51,7 +51,19 @@ allprojects {
             // Android JSC is installed from npm
             url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
         }
-
+        maven {
+              url 'https://api.mapbox.com/downloads/v2/releases/maven'
+              authentication {
+                  basic(BasicAuthentication)
+              }
+              credentials {
+                // Do not change the username below.
+                // This should always be `mapbox` (not your username).
+                  username = "mapbox"
+                  // Use the secret token you stored in gradle.properties as the password
+                  password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
+            }
+        }
         google()
         mavenCentral {
             // We don't want to fetch react-native from Maven Central as there are
@@ -60,6 +72,7 @@ allprojects {
                 excludeGroup 'com.facebook.react'
             }
         }
+      
         maven { url 'https://www.jitpack.io' }
     }
 }
